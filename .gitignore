@@ -1,0 +1,7 @@
+.idea
+.vs
+.vscode
+*.pyc
+*.log
+
+config.json
