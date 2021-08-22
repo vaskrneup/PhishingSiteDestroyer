@@ -60,10 +60,14 @@ class RequestManager:
             traceback.print_exc()
             sys.exit()
 
-    def run(self):
-        with ThreadPoolExecutor(max_workers=self.number_of_threads_to_use) as e:
-            for _ in range(self.total_request_count):
-                e.submit(lambda: self.__manager(requests.Session()))
+    def run(self, use_threads=True):
+        if use_threads:
+            with ThreadPoolExecutor(max_workers=self.number_of_threads_to_use) as e:
+                for _ in range(self.total_request_count):
+                    e.submit(lambda: self.__manager(requests.Session()))
+
+        for _ in range(self.total_request_count):
+            self.__manager(requests.Session())
 
     def __call__(self, *args, **kwargs):
-        self.run()
+        self.run(*args, **kwargs)
