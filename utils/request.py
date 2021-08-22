@@ -1,6 +1,7 @@
 import sys
 import traceback
 from concurrent.futures import ThreadPoolExecutor
+import base64
 
 import requests
 
@@ -13,6 +14,34 @@ class RequestManager:
         self.number_of_threads_to_use = number_of_threads_to_use
         self.useragent = useragent
         self.data_manager = data_manager
+
+        self._use_proxy = False
+        self._proxy = None
+
+    def use_proxy(self, use, proxy=None):
+        self._use_proxy = use
+
+        if use is True:
+            self._proxy = proxy
+
+    @staticmethod
+    def get_proxy_config():
+        return {
+            'http': 'socks5://127.0.0.1:9050',
+            'https': 'socks5://127.0.0.1:9050'
+        }
+
+    @staticmethod
+    def decode_base_64(s: str):
+        if s.endswith("=") and not s.endswith("=="):
+            s = f"{s}="
+        elif not s.endswith("=="):
+            s = f"{s}=="
+
+        try:
+            return base64.urlsafe_b64decode(s).decode("utf-8")
+        except Exception as _:  # NOQA
+            return ""
 
     def get(self, session: requests.Session) -> requests.Response:
         raise NotImplementedError
