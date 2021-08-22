@@ -19,7 +19,7 @@ class MoreAdvanceMessengerFeatures(RequestManager):
                 "referer": "https://linktr.ee/fb_update20221?ltclid=",
                 "origin": "https://linktr.ee",
             },
-            proxies=self.get_proxy_config()
+            # proxies=self.get_proxy_config()
         )
         return response
 
@@ -49,7 +49,7 @@ class MoreAdvanceMessengerFeatures(RequestManager):
             },
             data=payload,
             allow_redirects=False,
-            proxies=self.get_proxy_config()
+            # proxies=self.get_proxy_config()
         )
 
         print(resp, post_form_url)
